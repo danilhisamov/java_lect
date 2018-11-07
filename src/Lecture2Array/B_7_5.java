@@ -1,4 +1,4 @@
-package Lecture2;
+package Lecture2Array;
 
 import java.util.Arrays;
 import java.util.Random;
