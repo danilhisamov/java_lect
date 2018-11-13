@@ -11,8 +11,10 @@ public class Polymorphism {
         for (int i = 0; i < count; i++) {
             Class clazz = classes[random.nextInt(3)];
             I instance = (I) clazz.newInstance();
+            instance.setName("someName" + i);
             arr[i] = instance;
         }
+
 
         for (I el : arr)
             System.out.println(el.toPortray());
