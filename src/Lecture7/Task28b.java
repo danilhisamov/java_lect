@@ -1,75 +1,83 @@
 package Lecture7;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Task28b {
     public static void main(String[] args) throws InterruptedException {
-        int n = 10;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите размер массива: ");
+        int n = scanner.nextInt();
+        System.out.print("Введите кол-во потоков: ");
+        int k = scanner.nextInt();
+
+        if (k > n) {
+            System.out.println(String.format("Количество потоков[%d] больше размера массива [%d]", k, n));
+            k = n;
+            System.out.println(String.format("Количество потоков = %d", k));
+        }
         int[] a = new int[n];
-        int k = 5; // кол-во потоков
 
-        int controlSum = 0;
-        for (int i = 0; i < n; i++) {
-            a[i] = i;
-            controlSum += a[i];
+        int controlSum = fillArray(a);
+
+        int threadPart = n / k;
+        int lastThreadPart = n % k;
+
+        if (lastThreadPart == 0) {
+            lastThreadPart = threadPart;
+        } else {
+            lastThreadPart += threadPart;
         }
 
-        ArrayList<MyThread> list = new ArrayList<>();
-        for (int i = 1; i <= k; i++) {
-            MyThread t = new MyThread(0, a);
-            list.add(t);
-        }
-
-        int c = n;
-        Iterator<MyThread> it = list.iterator();
-        while (c > 0) {
-            while (it.hasNext()) {
-                MyThread t = it.next();
-                t.setK(t.getK() + 1);
-                c--;
+        MyThread[] threads = new MyThread[k];
+        for (int i = 0; i < threads.length; i++) {
+            if (i == threads.length - 1) {
+                threads[i] = new MyThread(i * threadPart, lastThreadPart, a);
+            } else {
+                threads[i] = new MyThread(i * threadPart, threadPart, a);
             }
-            it = list.iterator();
         }
 
-        it = list.iterator();
-        int prev = 0;
-        while (it.hasNext()) {
-            MyThread t = it.next();
-            t.setBeg(prev);
-            t.setEnd(t.getBeg() + t.getK());
-            prev = t.getEnd();
-        }
+        for (MyThread t : threads) t.start();
 
-        for (MyThread t : list) t.start();
-
-        for (MyThread t : list) t.getThread().join();
+        for (MyThread t : threads) t.getThread().join();
 
         int sum = 0;
-        for (MyThread t : list) {
+        for (MyThread t : threads) {
             sum += t.getTsum();
         }
 
         System.out.println("Control sum: " + controlSum);
         System.out.println("Result sum: " + sum);
     }
+
+    private static int fillArray(int[] a) {
+        Random random = new Random();
+        int controlSum = 0;
+        for (int i = 0; i < a.length; i++) {
+            a[i] = random.nextInt(1000);
+            controlSum += a[i];
+        }
+
+        return controlSum;
+    }
 }
 
 class MyThread implements Runnable {
     private Thread thread;
     private int beg;
-    private int end;
-    private int k;
-    private int tsum = 0;
+    private int k; // кол-во элементов
+    private int tSum = 0;
     private int[] a;
 
     public void run() {
         sum();
     }
 
-    public MyThread(int beg, int[] a) {
+    public MyThread(int beg, int k, int[] a) {
         thread = new Thread(this);
         this.beg = beg;
+        this.k = k;
         this.a = a;
     }
 
@@ -79,32 +87,11 @@ class MyThread implements Runnable {
     }
 
     public void sum() {
-        for (int i = beg; i < end; i++) tsum += a[i];
-        System.out.println("Thread[" + thread.getName() + "] sum: " + tsum);
-    }
-
-    public int getBeg() {
-        return beg;
-    }
-
-    public void setBeg(int beg) {
-        this.beg = beg;
-    }
-
-    public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
-    }
-
-    public int getK() {
-        return k;
-    }
-
-    public void setK(int k) {
-        this.k = k;
+        for (int i = beg; k > 0; k--) {
+            tSum += a[i];
+            i++;
+        };
+        System.out.println("Thread[" + thread.getName() + "] sum: " + tSum);
     }
 
     public Thread getThread() {
@@ -112,6 +99,6 @@ class MyThread implements Runnable {
     }
 
     public int getTsum() {
-        return tsum;
+        return tSum;
     }
 }
