@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Task28a {
     public static void main(String[] args) throws InterruptedException {
+        // не понятно, зачем двум потокам считать всю длину массива, зачем многопоточность??
         int n = 100;
         int[] a = new int[n];
 
