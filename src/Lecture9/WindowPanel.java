@@ -39,7 +39,7 @@ public class WindowPanel extends JPanel {
         g2.draw(new Line2D.Double(0, getHeight(), getWidth(), getHeight())); // bottom border
         g2.draw(new Line2D.Double(getWidth(), getHeight(), getWidth(), 0)); // right border
         g2.draw(new Line2D.Double(0, 0, getWidth(), 0)); // top border
-        g2.draw(new Line2D.Double(getWidth() / 2, 0, getWidth() / 2, getHeight())); // middle line
+        g2.draw(new Line2D.Double(getWidth() / 2.0, 0, getWidth() / 2.0, getHeight())); // middle line
 
         g2.setStroke(oldStroke);
     }
