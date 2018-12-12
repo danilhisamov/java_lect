@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Task226 {
     public static void main(String[] args) {
-        String s = "Lorem ipsum dolor sit amet consectetur adipiscing elit Aliquam eget ante eget diam posuere pellentesque quis non erat Maecenas dapibus";
-        String[] arr = s.split(" ");
+        String s = "Lorem ipsum dolor sit amet. Сonsectetur adipiscing elit! Aliquam-eget ante, eget diam posuere... Pellentesque quis non erat Maecenas dapibus";
+        String[] arr = s.split("[ ,!.]+");
 
         System.out.println(Arrays.toString(arr));
 

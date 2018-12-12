@@ -11,9 +11,10 @@ public class B_7_5 {
         int n = scanner.nextInt();
         int[] a = new int[n];
 
-        Random random = new Random();
-        for (int i = 0; i < n; i++)
-            a[i] = random.nextInt(2);
+        for (int i = 0; i < n; i++) {
+            System.out.print("[" + i + "]");
+            a[i] = scanner.nextInt();
+        }
 
         System.out.println("Исходный массив");
         System.out.println(Arrays.toString(a));
@@ -35,7 +36,7 @@ public class B_7_5 {
                     currentCount++;
                 }
 
-                if (i + 1 < a.length && a[i + 1] != 0) { //конец последовательности
+                if (i + 1 < a.length && a[i + 1] != 0 || i + 1 < a.length) { //конец последовательности
                     if (currentCount > maxCount) {
                         maxIndex = currentIndex;
                         maxCount = currentCount;
