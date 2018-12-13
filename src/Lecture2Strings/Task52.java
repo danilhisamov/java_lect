@@ -20,6 +20,7 @@ public class Task52 {
                 for (int j = 0; j < substr.length(); j++) {
                     if (i >= s.length() || s.charAt(i) != substr.charAt(j)) {
                         contains = false;
+                        i--;
                         break;
                     };
                     i++;
